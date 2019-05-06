@@ -1,0 +1,1 @@
+<view class="_div" bind:__l="__l"><view class="_p">用户名：<input type="text" placeholder="请输入用户名"/></view><view class="_p">密码：<input type="password" placeholder="请输入密码"/></view><view class="_p"><input type="button" value="登录"/></view></view>
