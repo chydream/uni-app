@@ -15,7 +15,10 @@
 		{
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "登录"
+				"navigationBarTitleText": "登录",
+				"app-plus":{
+					"titleNView": false //禁用原生导航栏
+				}
 			}
 		}
 		

@@ -2,29 +2,28 @@
 const mobileUser = {
     namespaced: true,
     state: {
-        userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || {},
-        role: JSON.parse(sessionStorage.getItem('role')) || [],
-        token: sessionStorage.getItem('token') || '',
-        menu: JSON.parse(sessionStorage.getItem('menu')) || [],
+        userInfo: {},
+        role:  [],
+        token:  '',
+        menu:  [],
         permission: {}
     },
     getters: {},
     mutations: {
         SET_TOKEN: (state, params) => {
             state.token = params
-            sessionStorage.setItem('token', params)
+            
         },
         SET_MENU: (state, params) => {
             state.menu = params
-            sessionStorage.setItem('menu', JSON.stringify(params))
+            
         },
         SET_ROLE: (state, params) => {
             state.role = params 
-            sessionStorage.setItem('role', JSON.stringify(params))
+            
         },
         SET_USER_INFO: (state, params) => {
             state.userInfo = params
-            sessionStorage.setItem('userInfo', JSON.stringify(params))
         }
     },
     actions: {

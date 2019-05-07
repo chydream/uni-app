@@ -88,9 +88,9 @@ const mixinsFun = {
 	},
 	getLogin(){
 		uni.login({
-			provider:'',
+			provider:'weixin',
 			success: (res) => {
-				console.log(res);
+				console.log(JSON.stringify(res));
 			},
 			fail: (error) => {
 				console.log(error);

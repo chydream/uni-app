@@ -1,4 +1,5 @@
 {
-  "navigationBarTitleText": "uni-app",
+  "navigationBarTitleText": "登录",
+  "titleNView": false,
   "usingComponents": {}
 }

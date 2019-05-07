@@ -1,5 +1,4 @@
 const getters = {
-    mobileToken: state => state.mobileUser.token,
-    title: state => state.mobileCommon.title
+    token: state => state.user.token
 }
 export default getters

@@ -12,7 +12,15 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	/*每个页面公共css */
 	@import url("./style/reset.css");
+	// uni-page[data-page="pages/login/login"]{
+	// 	.uni-page-head{
+	// 		display: none!important;
+	// 	}
+	// 	uni-page-head .uni-page-head~.uni-placeholder{
+	// 		display: none;
+	// 	}
+	// }
 </style>

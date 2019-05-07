@@ -1,1 +1,2 @@
+setCssToHead([".",[1],"status_bar { height: var(--status-bar-height); width: 100%; background-color: #F8F8F8; }\n.",[1],"top_view { height: var(--status-bar-height); width: 100%; position: fixed; background-color: #F8F8F8; top: 0; z-index: 999; }\n.",[1],"log-btn{ text-align: center; }\n",],undefined,{path:"./pages/login/login.wxss"})();
 document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/login/login.wxml') } }));

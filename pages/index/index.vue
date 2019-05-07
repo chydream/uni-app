@@ -17,10 +17,14 @@
 			}
 		},
 		computed: {
-		  ...mapGetters(['mobileToken']),
+		  ...mapGetters(['token'])
 		},
 		onLoad() {
-			console.log(this.mobileToken)
+		},
+		onShow (){
+			if(this.token==''){
+				this.goUrl('/pages/login/login');
+			}
 		},
 		methods: {
 
