@@ -1,23 +1,12 @@
-const USERS_KEY = 'USERS_KEY';
-const STATE_KEY = 'STATE_KEY';
-const getUsers = function () {
-	let ret = '';
-	ret = uni.getStorageSync(USERS_KEY);
-	if(!ret){
-		ret = '[]';
-	}
-	return JSON.parse(ret);
-}
-const addUser = function(userInfo){
-	let users = getUsers();
-	users.push({
-		account:userInfo.account,
-		password:userInfo.password
-	})
-	uni.setStorageSync(USERS_KEY,JSON.stringify(users))
-}
 
+const getStore = function (key) {
+	let value = uni.getStorageSync(key);
+	return JSON.parse(value);
+}
+const setStore = function(key,value){
+	uni.setStorageSync(key,JSON.stringify(value))
+}
 export default {
-	getUsers,
-	addUser
+	getStore,
+	setStore
 }

@@ -1,11 +1,12 @@
 import {login} from '@/api/userApi'
+import {getStore,setStore} from '@/util/service'
 const user = {
     namespaced: true,
     state: {
-        userInfo: {},
-        role:  [],
-        token:  '',
-        menu:  [],
+        userInfo: getStore('userInfo')|| {},
+        role: getStore('role')|| [],
+        token: getStore('token') || '',
+        menu: getStore('menu') || [],
         permission: {},
 		userName:''
     },
@@ -13,18 +14,19 @@ const user = {
     mutations: {
         SET_TOKEN: (state, params) => {
             state.token = params
-            
+            setStore('token', params)
         },
         SET_MENU: (state, params) => {
             state.menu = params
-            
+            setStore('menu', params)
         },
         SET_ROLE: (state, params) => {
             state.role = params 
-            
+            setStore('role', params)
         },
         SET_USER_INFO: (state, params) => {
             state.userInfo = params
+            setStore('userInfo', params)
         },
 		SET_USERNAME:(state,params)=>{
 			state.token = params.token
