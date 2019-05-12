@@ -1,15 +1,11 @@
-import axios from './axios'
-import qs from 'qs'
-import {baseUrl} from '@/config/config'
-import '../mock/userMock'
-import '../mock/menuMock'
+import request from './request'
+/**
+ * 登录接口
+ * @param {password,username} params 
+ */
 export const login = (params) => {
     return new Promise((resolve, reject) => {
-        axios({
-            url: baseUrl + '/user/login',
-            method: 'post',
-            data: qs.stringify(params)
-        }).then(res => {
+        let successCallBack = function(res){
             var data = res.data
             if (params.username == data.account[0].username && params.password == data.account[0].password) {
                 resolve({data: {token: '123456789'}, message: '登录成功', success: true})
@@ -18,7 +14,8 @@ export const login = (params) => {
             } else {
                 resolve({data: {}, message: '登录失败', success: false})
             }
-        })
+        }
+        request(successCallBack,null,'https://www.easy-mock.com/mock/5cd7d319d0d16128bd72b17a/demo/login','POST',params)
     })
 }
 export const logout = (params) => {
@@ -32,7 +29,6 @@ export const logout = (params) => {
         })
     })
 }
-
 export const getUserInfo = (params) => {
     return new Promise((resolve, reject) => {
         axios({
@@ -46,18 +42,6 @@ export const getUserInfo = (params) => {
                 res.data.userInfo.role = ['user']
                 resolve({data: res.data.userInfo, message: '获取用户信息成功', success: true})
             }
-        })
-    })
-}
-
-export const getMenu = (params) => {
-    return new Promise((resolve, reject) => {
-        axios({
-            url: baseUrl + '/user/menu',
-            method: 'post',
-            data: qs.stringify(params)
-        }).then(res => {
-            resolve({data: res.data[params], message: '获取成功', success: true})
         })
     })
 }

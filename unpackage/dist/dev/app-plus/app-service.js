@@ -1067,6 +1067,8 @@ function gz$gwx_2(){
 if( __WXML_GLOBAL__.ops_cached.$gwx_2)return __WXML_GLOBAL__.ops_cached.$gwx_2
 __WXML_GLOBAL__.ops_cached.$gwx_2=[];
 (function(z){var a=11;function Z(ops){z.push(ops)}
+Z([3,'__l'])
+Z([[7],[3,'hasProvider']])
 })(__WXML_GLOBAL__.ops_cached.$gwx_2);return __WXML_GLOBAL__.ops_cached.$gwx_2
 }
 function gz$gwx_3(){
@@ -1088,6 +1090,18 @@ e_[x[0]]={f:m0,j:[],i:[],ti:[],ic:[]}
 d_[x[1]]={}
 var m1=function(e,s,r,gg){
 var z=gz$gwx_2()
+cs.push("./pages/login/login.wxml:view:1:1")
+var xC=_n('view')
+_rz(z,xC,'bind:__l',0,e,s,gg)
+var oD=_v()
+_(xC,oD)
+if(_oz(z,1,e,s,gg)){oD.wxVkey=1
+cs.push("./pages/login/login.wxml:block:1:595")
+cs.pop()
+}
+oD.wxXCkey=1
+cs.pop()
+_(r,xC)
 return r
 }
 e_[x[1]]={f:m1,j:[],i:[],ti:[],ic:[]}
@@ -9734,7 +9748,8 @@ mixinsMobile;exports.default = _default;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var getters = {
-  token: function token(state) {return state.user.token;} };var _default =
+  token: function token(state) {return state.user.token;},
+  userName: function userName(state) {return state.user.userName;} };var _default =
 
 getters;exports.default = _default;
 
@@ -9772,14 +9787,15 @@ store;exports.default = _default;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // import {login, getMenu, logout, getUserInfo} from '@/api/userApi'
-var mobileUser = {
+var user = {
   namespaced: true,
   state: {
     userInfo: {},
     role: [],
     token: '',
     menu: [],
-    permission: {} },
+    permission: {},
+    userName: '' },
 
   getters: {},
   mutations: {
@@ -9797,10 +9813,17 @@ var mobileUser = {
     },
     SET_USER_INFO: function SET_USER_INFO(state, params) {
       state.userInfo = params;
+    },
+    SET_USERNAME: function SET_USERNAME(state, params) {
+      state.token = params.token;
+      state.userName = params.userName;
     } },
 
   actions: {
-    Login: function Login(_ref, params) {var state = _ref.state,commit = _ref.commit,dispatch = _ref.dispatch;
+    testLogin: function testLogin(_ref, params) {var state = _ref.state,commit = _ref.commit,dispatch = _ref.dispatch;
+
+    },
+    Login: function Login(_ref2, params) {var state = _ref2.state,commit = _ref2.commit,dispatch = _ref2.dispatch;
       return new Promise(function (resolve, reject) {
         login(params).then(function (res) {
           commit('SET_TOKEN', res.data.token);
@@ -9808,7 +9831,7 @@ var mobileUser = {
         });
       });
     },
-    Logout: function Logout(_ref2, params) {var state = _ref2.state,commit = _ref2.commit,dispatch = _ref2.dispatch;
+    Logout: function Logout(_ref3, params) {var state = _ref3.state,commit = _ref3.commit,dispatch = _ref3.dispatch;
       return new Promise(function (resolve, reject) {
         logout(params).then(function (res) {
           commit('SET_TOKEN', '');
@@ -9818,7 +9841,7 @@ var mobileUser = {
         });
       });
     },
-    GetUserInfo: function GetUserInfo(_ref3, params) {var state = _ref3.state,commit = _ref3.commit,dispatch = _ref3.dispatch;
+    GetUserInfo: function GetUserInfo(_ref4, params) {var state = _ref4.state,commit = _ref4.commit,dispatch = _ref4.dispatch;
       return new Promise(function (resolve, reject) {
         getUserInfo(params).then(function (res) {
           commit('SET_ROLE', res.data.role);
@@ -9827,7 +9850,7 @@ var mobileUser = {
         });
       });
     },
-    GetMenu: function GetMenu(_ref4, params) {var state = _ref4.state,commit = _ref4.commit,dispatch = _ref4.dispatch;
+    GetMenu: function GetMenu(_ref5, params) {var state = _ref5.state,commit = _ref5.commit,dispatch = _ref5.dispatch;
       return new Promise(function (resolve, reject) {
         var role = state.role.length > 0 ? state.role[0] : '';
         getMenu(role).then(function (res) {
@@ -9837,7 +9860,7 @@ var mobileUser = {
       });
     },
     // 将菜单列表扁平化形成权限列表
-    GetPermissionList: function GetPermissionList(_ref5) {var state = _ref5.state,dispatch = _ref5.dispatch;
+    GetPermissionList: function GetPermissionList(_ref6) {var state = _ref6.state,dispatch = _ref6.dispatch;
       return new Promise(function (resolve) {
         var permissionList = [];
         // 将菜单数据扁平化为一级
@@ -9860,7 +9883,7 @@ var mobileUser = {
     } } };var _default =
 
 
-mobileUser;exports.default = _default;
+user;exports.default = _default;
 
 /***/ })
 
@@ -10248,109 +10271,116 @@ define('pages/login/login.js',function(require, module, exports, window, documen
 
 
 
+var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+var _mixinsFun = _interopRequireDefault(__webpack_require__(/*! ../../mixins/mixinsFun.js */ "E:\\uni-app\\first-project\\uni-app\\mixins\\mixinsFun.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+{
+  mixins: [_mixinsFun.default],
+  data: function data() {
+    return {
+      account: '',
+      password: '',
+      title: 'input',
+      focus: false,
+      inputValue: '',
+      changeValue: '',
+      hasProvider: true,
+      providerList: [],
+      positionTop: '' };
 
+  },
+  computed: _objectSpread({},
+  (0, _vuex.mapGetters)(['userName', 'token'])),
 
+  methods: {
+    initProvider: function initProvider() {var _this = this;
+      var filters = ['weixin', 'qq', 'sinaweibo'];
+      uni.getProvider({
+        service: 'oauth',
+        success: function success(res) {
+          console.log(JSON.stringify(res), " at pages\\login\\login.vue:56");
+          if (res.provider && res.provider.length) {
+            for (var i = 0; i < res.provider.length; i++) {
+              if (~filters.indexOf(res.provider[i])) {
+                _this.providerList.push({
+                  value: res.provider[i],
+                  image: '../../static/img/' + res.provider[i] + '.png' });
 
+                console.log(JSON.stringify(_this.providerList), " at pages\\login\\login.vue:64");
+              }
+            }
+            _this.hasProvider = true;
+          }
+        },
+        fail: function fail(err) {
+          console.error('获取服务供应商失败：' + JSON.stringify(err), " at pages\\login\\login.vue:71");
+        } });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _mixinsFun = _interopRequireDefault(__webpack_require__(/*! ../../mixins/mixinsFun.js */ "E:\\uni-app\\first-project\\uni-app\\mixins\\mixinsFun.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = { mixins: [_mixinsFun.default], data: function data() {return { account: '', password: '' };}, methods: { bindLogin: function bindLogin() {// this.uShowActionSheet(['A', 'B', 'C'])
+    },
+    bindLogin: function bindLogin() {
+      // this.uShowActionSheet(['A', 'B', 'C'])
       // console.log(this.getSystemInfoSyncData())
       // this.goBackUrl(1);
       // this.getProviderData()
-      this.getLogin();}, initPosition: function initPosition() {this.positionTop = uni.getSystemInfoSync().windowHeight - 100;} }, onReady: function onReady() {this.initPosition();} };exports.default = _default;
+      this.getLogin();
+    },
+    initPosition: function initPosition() {
+      this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
+    },
+    oauth: function oauth(value) {var _this2 = this;
+      uni.login({
+        provider: value,
+        success: function success(res) {
+          uni.getUserInfo({
+            provider: value,
+            success: function success(infoRes) {
+              // console.log(JSON.stringify(infoRes.userInfo));
+              /**
+               * 实际开发中，获取用户信息后，需要将信息上报至服务端。
+               * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
+               */
+              _this2.toMain(infoRes.userInfo.nickName, infoRes.userInfo.openId);
+            } });
+
+        },
+        fail: function fail(err) {
+          console.error('授权登录失败：' + JSON.stringify(err), " at pages\\login\\login.vue:102");
+        } });
+
+    },
+    toMain: function toMain(userName, token) {
+      this.$store.commit('user/SET_USERNAME', { userName: userName, token: token });
+      /**
+                                                                                      * 强制登录时使用reLaunch方式跳转过来
+                                                                                      * 返回首页也使用reLaunch方式
+                                                                                      */
+      if (this.token) {
+        uni.reLaunch({
+          url: '../index/index' });
+
+      } else {
+        uni.navigateBack();
+      }
+
+    },
+    onKeyInput: function onKeyInput(event) {
+      this.inputValue = event.target.value;
+    },
+    replaceInput: function replaceInput(event) {
+      var value = event.target.value;
+      if (value === '11') {
+        this.changeValue = '2';
+      }
+    },
+    hideKeyboard: function hideKeyboard(event) {
+      if (event.target.value === '123') {
+        uni.hideKeyboard();
+      }
+    } },
+
+  onReady: function onReady() {
+    this.initProvider();
+    this.initPosition();
+  } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 
 /***/ }),

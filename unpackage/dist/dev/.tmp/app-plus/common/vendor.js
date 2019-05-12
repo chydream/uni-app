@@ -8336,7 +8336,8 @@ mixinsMobile;exports.default = _default;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var getters = {
-  token: function token(state) {return state.user.token;} };var _default =
+  token: function token(state) {return state.user.token;},
+  userName: function userName(state) {return state.user.userName;} };var _default =
 
 getters;exports.default = _default;
 
@@ -8374,14 +8375,15 @@ store;exports.default = _default;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // import {login, getMenu, logout, getUserInfo} from '@/api/userApi'
-var mobileUser = {
+var user = {
   namespaced: true,
   state: {
     userInfo: {},
     role: [],
     token: '',
     menu: [],
-    permission: {} },
+    permission: {},
+    userName: '' },
 
   getters: {},
   mutations: {
@@ -8399,10 +8401,17 @@ var mobileUser = {
     },
     SET_USER_INFO: function SET_USER_INFO(state, params) {
       state.userInfo = params;
+    },
+    SET_USERNAME: function SET_USERNAME(state, params) {
+      state.token = params.token;
+      state.userName = params.userName;
     } },
 
   actions: {
-    Login: function Login(_ref, params) {var state = _ref.state,commit = _ref.commit,dispatch = _ref.dispatch;
+    testLogin: function testLogin(_ref, params) {var state = _ref.state,commit = _ref.commit,dispatch = _ref.dispatch;
+
+    },
+    Login: function Login(_ref2, params) {var state = _ref2.state,commit = _ref2.commit,dispatch = _ref2.dispatch;
       return new Promise(function (resolve, reject) {
         login(params).then(function (res) {
           commit('SET_TOKEN', res.data.token);
@@ -8410,7 +8419,7 @@ var mobileUser = {
         });
       });
     },
-    Logout: function Logout(_ref2, params) {var state = _ref2.state,commit = _ref2.commit,dispatch = _ref2.dispatch;
+    Logout: function Logout(_ref3, params) {var state = _ref3.state,commit = _ref3.commit,dispatch = _ref3.dispatch;
       return new Promise(function (resolve, reject) {
         logout(params).then(function (res) {
           commit('SET_TOKEN', '');
@@ -8420,7 +8429,7 @@ var mobileUser = {
         });
       });
     },
-    GetUserInfo: function GetUserInfo(_ref3, params) {var state = _ref3.state,commit = _ref3.commit,dispatch = _ref3.dispatch;
+    GetUserInfo: function GetUserInfo(_ref4, params) {var state = _ref4.state,commit = _ref4.commit,dispatch = _ref4.dispatch;
       return new Promise(function (resolve, reject) {
         getUserInfo(params).then(function (res) {
           commit('SET_ROLE', res.data.role);
@@ -8429,7 +8438,7 @@ var mobileUser = {
         });
       });
     },
-    GetMenu: function GetMenu(_ref4, params) {var state = _ref4.state,commit = _ref4.commit,dispatch = _ref4.dispatch;
+    GetMenu: function GetMenu(_ref5, params) {var state = _ref5.state,commit = _ref5.commit,dispatch = _ref5.dispatch;
       return new Promise(function (resolve, reject) {
         var role = state.role.length > 0 ? state.role[0] : '';
         getMenu(role).then(function (res) {
@@ -8439,7 +8448,7 @@ var mobileUser = {
       });
     },
     // 将菜单列表扁平化形成权限列表
-    GetPermissionList: function GetPermissionList(_ref5) {var state = _ref5.state,dispatch = _ref5.dispatch;
+    GetPermissionList: function GetPermissionList(_ref6) {var state = _ref6.state,dispatch = _ref6.dispatch;
       return new Promise(function (resolve) {
         var permissionList = [];
         // 将菜单数据扁平化为一级
@@ -8462,7 +8471,7 @@ var mobileUser = {
     } } };var _default =
 
 
-mobileUser;exports.default = _default;
+user;exports.default = _default;
 
 /***/ })
 

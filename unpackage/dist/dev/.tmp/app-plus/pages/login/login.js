@@ -37,109 +37,116 @@
 
 
 
+var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+var _mixinsFun = _interopRequireDefault(__webpack_require__(/*! ../../mixins/mixinsFun.js */ "E:\\uni-app\\first-project\\uni-app\\mixins\\mixinsFun.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+{
+  mixins: [_mixinsFun.default],
+  data: function data() {
+    return {
+      account: '',
+      password: '',
+      title: 'input',
+      focus: false,
+      inputValue: '',
+      changeValue: '',
+      hasProvider: true,
+      providerList: [],
+      positionTop: '' };
 
+  },
+  computed: _objectSpread({},
+  (0, _vuex.mapGetters)(['userName', 'token'])),
 
+  methods: {
+    initProvider: function initProvider() {var _this = this;
+      var filters = ['weixin', 'qq', 'sinaweibo'];
+      uni.getProvider({
+        service: 'oauth',
+        success: function success(res) {
+          console.log(JSON.stringify(res), " at pages\\login\\login.vue:56");
+          if (res.provider && res.provider.length) {
+            for (var i = 0; i < res.provider.length; i++) {
+              if (~filters.indexOf(res.provider[i])) {
+                _this.providerList.push({
+                  value: res.provider[i],
+                  image: '../../static/img/' + res.provider[i] + '.png' });
 
+                console.log(JSON.stringify(_this.providerList), " at pages\\login\\login.vue:64");
+              }
+            }
+            _this.hasProvider = true;
+          }
+        },
+        fail: function fail(err) {
+          console.error('获取服务供应商失败：' + JSON.stringify(err), " at pages\\login\\login.vue:71");
+        } });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _mixinsFun = _interopRequireDefault(__webpack_require__(/*! ../../mixins/mixinsFun.js */ "E:\\uni-app\\first-project\\uni-app\\mixins\\mixinsFun.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = { mixins: [_mixinsFun.default], data: function data() {return { account: '', password: '' };}, methods: { bindLogin: function bindLogin() {// this.uShowActionSheet(['A', 'B', 'C'])
+    },
+    bindLogin: function bindLogin() {
+      // this.uShowActionSheet(['A', 'B', 'C'])
       // console.log(this.getSystemInfoSyncData())
       // this.goBackUrl(1);
       // this.getProviderData()
-      this.getLogin();}, initPosition: function initPosition() {this.positionTop = uni.getSystemInfoSync().windowHeight - 100;} }, onReady: function onReady() {this.initPosition();} };exports.default = _default;
+      this.getLogin();
+    },
+    initPosition: function initPosition() {
+      this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
+    },
+    oauth: function oauth(value) {var _this2 = this;
+      uni.login({
+        provider: value,
+        success: function success(res) {
+          uni.getUserInfo({
+            provider: value,
+            success: function success(infoRes) {
+              // console.log(JSON.stringify(infoRes.userInfo));
+              /**
+               * 实际开发中，获取用户信息后，需要将信息上报至服务端。
+               * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
+               */
+              _this2.toMain(infoRes.userInfo.nickName, infoRes.userInfo.openId);
+            } });
+
+        },
+        fail: function fail(err) {
+          console.error('授权登录失败：' + JSON.stringify(err), " at pages\\login\\login.vue:102");
+        } });
+
+    },
+    toMain: function toMain(userName, token) {
+      this.$store.commit('user/SET_USERNAME', { userName: userName, token: token });
+      /**
+                                                                                      * 强制登录时使用reLaunch方式跳转过来
+                                                                                      * 返回首页也使用reLaunch方式
+                                                                                      */
+      if (this.token) {
+        uni.reLaunch({
+          url: '../index/index' });
+
+      } else {
+        uni.navigateBack();
+      }
+
+    },
+    onKeyInput: function onKeyInput(event) {
+      this.inputValue = event.target.value;
+    },
+    replaceInput: function replaceInput(event) {
+      var value = event.target.value;
+      if (value === '11') {
+        this.changeValue = '2';
+      }
+    },
+    hideKeyboard: function hideKeyboard(event) {
+      if (event.target.value === '123') {
+        uni.hideKeyboard();
+      }
+    } },
+
+  onReady: function onReady() {
+    this.initProvider();
+    this.initPosition();
+  } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 
 /***/ }),

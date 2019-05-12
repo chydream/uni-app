@@ -1,12 +1,13 @@
-// import {login, getMenu, logout, getUserInfo} from '@/api/userApi'
-const mobileUser = {
+import {login} from '@/api/userApi'
+const user = {
     namespaced: true,
     state: {
         userInfo: {},
         role:  [],
         token:  '',
         menu:  [],
-        permission: {}
+        permission: {},
+		userName:''
     },
     getters: {},
     mutations: {
@@ -24,7 +25,11 @@ const mobileUser = {
         },
         SET_USER_INFO: (state, params) => {
             state.userInfo = params
-        }
+        },
+		SET_USERNAME:(state,params)=>{
+			state.token = params.token
+			state.userName = params.userName
+		}
     },
     actions: {
         Login ({state, commit, dispatch}, params) {
@@ -87,4 +92,4 @@ const mobileUser = {
         }
     }
 }
-export default mobileUser
+export default user
