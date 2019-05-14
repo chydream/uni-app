@@ -43,7 +43,7 @@ var _mixinsFun = _interopRequireDefault(__webpack_require__(/*! ../../mixins/mix
   mixins: [_mixinsFun.default],
   data: function data() {
     return {
-      account: '',
+      username: '',
       password: '',
       title: 'input',
       focus: false,
@@ -55,7 +55,7 @@ var _mixinsFun = _interopRequireDefault(__webpack_require__(/*! ../../mixins/mix
 
   },
   computed: _objectSpread({},
-  (0, _vuex.mapGetters)(['userName', 'token'])),
+  (0, _vuex.mapGetters)(['uniToken'])),
 
   methods: {
     initProvider: function initProvider() {var _this = this;
@@ -63,7 +63,6 @@ var _mixinsFun = _interopRequireDefault(__webpack_require__(/*! ../../mixins/mix
       uni.getProvider({
         service: 'oauth',
         success: function success(res) {
-          console.log(JSON.stringify(res), " at pages\\login\\login.vue:56");
           if (res.provider && res.provider.length) {
             for (var i = 0; i < res.provider.length; i++) {
               if (~filters.indexOf(res.provider[i])) {
@@ -71,28 +70,43 @@ var _mixinsFun = _interopRequireDefault(__webpack_require__(/*! ../../mixins/mix
                   value: res.provider[i],
                   image: '../../static/img/' + res.provider[i] + '.png' });
 
-                console.log(JSON.stringify(_this.providerList), " at pages\\login\\login.vue:64");
               }
             }
             _this.hasProvider = true;
           }
         },
         fail: function fail(err) {
-          console.error('获取服务供应商失败：' + JSON.stringify(err), " at pages\\login\\login.vue:71");
+          console.error('获取服务供应商失败：' + JSON.stringify(err), " at pages\\login\\login.vue:69");
         } });
 
     },
-    bindLogin: function bindLogin() {
-      // this.uShowActionSheet(['A', 'B', 'C'])
-      // console.log(this.getSystemInfoSyncData())
-      // this.goBackUrl(1);
-      // this.getProviderData()
-      this.getLogin();
+    bindLogin: function bindLogin() {var _this2 = this;
+      var params = {
+        username: this.username,
+        password: this.password };
+
+      this.$store.dispatch('user/Login', params).then(function (res) {
+        if (res.success) {
+          _this2.$store.dispatch('user/GetUserInfo', { token: res.data.token }).then(function (data) {
+            if (data.success) {
+              if (_this2.uniToken) {
+                uni.reLaunch({
+                  url: '../index/index' });
+
+              } else {
+                uni.navigateBack();
+              }
+            }
+          });
+        } else {
+          _this2.showToast('登录失败');
+        }
+      });
     },
     initPosition: function initPosition() {
       this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
     },
-    oauth: function oauth(value) {var _this2 = this;
+    oauth: function oauth(value) {var _this3 = this;
       uni.login({
         provider: value,
         success: function success(res) {
@@ -104,28 +118,20 @@ var _mixinsFun = _interopRequireDefault(__webpack_require__(/*! ../../mixins/mix
                * 实际开发中，获取用户信息后，需要将信息上报至服务端。
                * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
                */
-              _this2.toMain(infoRes.userInfo.nickName, infoRes.userInfo.openId);
+              _this3.$store.commit('user/SET_OPENID', { openId: infoRes.userInfo.openId });
+              if (infoRes.userInfo.openId) {
+                uni.reLaunch({
+                  url: '../index/index' });
+
+              } else {
+                uni.navigateBack();
+              }
             } });
 
         },
         fail: function fail(err) {
-          console.error('授权登录失败：' + JSON.stringify(err), " at pages\\login\\login.vue:102");
+          console.error('授权登录失败：' + JSON.stringify(err), " at pages\\login\\login.vue:123");
         } });
-
-    },
-    toMain: function toMain(userName, token) {
-      this.$store.commit('user/SET_USERNAME', { userName: userName, token: token });
-      /**
-                                                                                      * 强制登录时使用reLaunch方式跳转过来
-                                                                                      * 返回首页也使用reLaunch方式
-                                                                                      */
-      if (this.token) {
-        uni.reLaunch({
-          url: '../index/index' });
-
-      } else {
-        uni.navigateBack();
-      }
 
     },
     onKeyInput: function onKeyInput(event) {

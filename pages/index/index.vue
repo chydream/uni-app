@@ -17,12 +17,15 @@
 			}
 		},
 		computed: {
-		  ...mapGetters(['token'])
+		  ...mapGetters(['uniToken'])
 		},
 		onLoad() {
+			if(this.uniToken==''){
+				this.goUrl('/pages/login/login');
+			}
 		},
 		onShow (){
-			if(this.token==''){
+			if(this.uniToken==''){
 				this.goUrl('/pages/login/login');
 			}
 		},

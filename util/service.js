@@ -1,12 +1,15 @@
-
-const getStore = function (key) {
+export const getStore = function (key) {
 	let value = uni.getStorageSync(key);
-	return JSON.parse(value);
+	console.log(key);
+	console.log(JSON.stringify(uni.getStorageSync(key)));
+	if(value==''){
+		return value;
+	}else if(typeof value == "object"){
+		return value;
+	}else{
+		return JSON.parse(value);
+	}
 }
-const setStore = function(key,value){
-	uni.setStorageSync(key,JSON.stringify(value))
-}
-export default {
-	getStore,
-	setStore
+export const setStore = function(key,value){
+	uni.setStorageSync(key,JSON.stringify(value));
 }

@@ -27,12 +27,15 @@ var _vuex = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.j
 
   },
   computed: _objectSpread({},
-  (0, _vuex.mapGetters)(['token'])),
+  (0, _vuex.mapGetters)(['uniToken'])),
 
   onLoad: function onLoad() {
+    if (this.uniToken == '') {
+      this.goUrl('/pages/login/login');
+    }
   },
   onShow: function onShow() {
-    if (this.token == '') {
+    if (this.uniToken == '') {
       this.goUrl('/pages/login/login');
     }
   },

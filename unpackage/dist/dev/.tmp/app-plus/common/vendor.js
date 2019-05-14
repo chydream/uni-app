@@ -378,7 +378,7 @@ function getData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"app-plus","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"app-plus","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -6457,7 +6457,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"app-plus","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"app-plus","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$mp[vm.mpType];
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -6478,14 +6478,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"app-plus","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"app-plus","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$mp[vm.mpType];
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"app-plus","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"app-plus","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$mp[vm.mpType];
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -6554,7 +6554,7 @@ var patch = function(oldVnode, vnode) {
         });
         var diffData = diff(data, mpData);
         if (Object.keys(diffData).length) {
-            if (Object({"VUE_APP_PLATFORM":"app-plus","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+            if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"app-plus","BASE_URL":"/"}).VUE_APP_DEBUG) {
                 console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
                     ']差量更新',
                     JSON.stringify(diffData));
@@ -7986,6 +7986,120 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "E:\\uni-app\\first-project\\uni-app\\api\\request.js":
+/*!*******************************************************!*\
+  !*** E:/uni-app/first-project/uni-app/api/request.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = request;var _config = __webpack_require__(/*! ../config/config */ "E:\\uni-app\\first-project\\uni-app\\config\\config.js");
+function request(successCallBack, errorCallBack, url, method, param) {
+  uni.showLoading({
+    title: '加载中' });
+
+  var header = {
+    token: '123456' };
+
+  uni.request({
+    url: _config.baseUrl + url, //仅为示例，并非真实接口地址。
+    data: param,
+    // header: header,
+    method: method,
+    dataType: 'application/json; charset=utf-8',
+    success: function success(data) {
+      //成功处理
+      if (null != successCallBack) {
+        successCallBack(data);
+      }
+    },
+    fail: function fail(error) {
+      //异常处理；
+      if (null != errorCallBack) {
+        errorCallBack(xhr, textStatus, errorThrown);
+      }
+    },
+    complete: function complete() {
+      uni.hideLoading();
+    } });
+
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
+
+/***/ }),
+
+/***/ "E:\\uni-app\\first-project\\uni-app\\api\\userApi.js":
+/*!*******************************************************!*\
+  !*** E:/uni-app/first-project/uni-app/api/userApi.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getUserInfo = exports.logout = exports.login = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request */ "E:\\uni-app\\first-project\\uni-app\\api\\request.js"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+/**
+                                                                                                                                                                                                                                                                                                    * 登录接口
+                                                                                                                                                                                                                                                                                                    * @param {password,username} params 
+                                                                                                                                                                                                                                                                                                    */
+var login = function login(params) {
+  return new Promise(function (resolve, reject) {
+    var successCallBack = function successCallBack(res) {
+      if (res.data) {
+        var data = JSON.parse(res.data);
+        if (params.username == data.account[0].username && params.password == data.account[0].password) {
+          resolve({ data: { token: '123456789' }, message: '登录成功', success: true });
+        } else if (params.username == data.account[1].username && params.password == data.account[1].password) {
+          resolve({ data: { token: '987654321' }, message: '登录成功', success: true });
+        } else {
+          resolve({ data: {}, message: '登录失败', success: false });
+        }
+      }
+    };
+    (0, _request.default)(successCallBack, null, 'https://www.easy-mock.com/mock/5cd7d319d0d16128bd72b17a/demo/login', 'POST', params);
+  });
+};exports.login = login;
+var logout = function logout(params) {
+  return new Promise(function (resolve, reject) {
+    var successCallBack = function successCallBack(res) {
+      if (res.data) {
+        resolve({ message: '登出成功', success: true });
+      }
+    };
+    (0, _request.default)(successCallBack, null, 'https://www.easy-mock.com/mock/5cd7d319d0d16128bd72b17a/demo/login', 'POST', params);
+  });
+};exports.logout = logout;
+var getUserInfo = function getUserInfo(params) {
+  return new Promise(function (resolve, reject) {
+    var successCallBack = function successCallBack(res) {
+      if (res.data) {
+        var data = JSON.parse(res.data).data;
+        if (params.token == '123456789') {
+          resolve({ data: data.userInfo, message: '获取用户信息成功', success: true });
+        } else {
+          res.data.userInfo.role = ['user'];
+          resolve({ data: data.userInfo, message: '获取用户信息成功', success: true });
+        }
+      }
+    };
+    (0, _request.default)(successCallBack, null, 'https://www.easy-mock.com/mock/5cd7d319d0d16128bd72b17a/demo/userInfo', 'POST', params);
+  });
+};exports.getUserInfo = getUserInfo;
+
+/***/ }),
+
+/***/ "E:\\uni-app\\first-project\\uni-app\\config\\config.js":
+/*!*********************************************************!*\
+  !*** E:/uni-app/first-project/uni-app/config/config.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.baseUrl = void 0;var baseUrl = '';exports.baseUrl = baseUrl;
+
+/***/ }),
+
 /***/ "E:\\uni-app\\first-project\\uni-app\\main.js":
 /*!************************************************!*\
   !*** E:/uni-app/first-project/uni-app/main.js ***!
@@ -8336,8 +8450,7 @@ mixinsMobile;exports.default = _default;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var getters = {
-  token: function token(state) {return state.user.token;},
-  userName: function userName(state) {return state.user.userName;} };var _default =
+  uniToken: function uniToken(state) {return state.user.uniToken;} };var _default =
 
 getters;exports.default = _default;
 
@@ -8374,54 +8487,54 @@ store;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // import {login, getMenu, logout, getUserInfo} from '@/api/userApi'
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _userApi = __webpack_require__(/*! @/api/userApi */ "E:\\uni-app\\first-project\\uni-app\\api\\userApi.js");
+var _service = __webpack_require__(/*! ../../util/service */ "E:\\uni-app\\first-project\\uni-app\\util\\service.js");
 var user = {
   namespaced: true,
   state: {
-    userInfo: {},
-    role: [],
-    token: '',
-    menu: [],
+    userInfo: (0, _service.getStore)('userInfo') || {},
+    role: (0, _service.getStore)('role') || [],
+    uniToken: (0, _service.getStore)('uniToken') || '',
+    menu: (0, _service.getStore)('menu') || [],
     permission: {},
-    userName: '' },
+    openId: '' },
 
   getters: {},
   mutations: {
     SET_TOKEN: function SET_TOKEN(state, params) {
-      state.token = params;
-
+      state.uniToken = params;
+      (0, _service.setStore)('uniToken', params);
     },
     SET_MENU: function SET_MENU(state, params) {
       state.menu = params;
-
+      (0, _service.setStore)('menu', params);
     },
     SET_ROLE: function SET_ROLE(state, params) {
       state.role = params;
-
+      (0, _service.setStore)('role', params);
     },
     SET_USER_INFO: function SET_USER_INFO(state, params) {
       state.userInfo = params;
+      (0, _service.setStore)('userInfo', params);
     },
-    SET_USERNAME: function SET_USERNAME(state, params) {
-      state.token = params.token;
-      state.userName = params.userName;
+    SET_OPENID: function SET_OPENID(state, params) {
+      state.uniToken = params.openId;
+      (0, _service.setStore)('uniToken', params.openId);
+      state.openId = params.openId;
     } },
 
   actions: {
-    testLogin: function testLogin(_ref, params) {var state = _ref.state,commit = _ref.commit,dispatch = _ref.dispatch;
-
-    },
-    Login: function Login(_ref2, params) {var state = _ref2.state,commit = _ref2.commit,dispatch = _ref2.dispatch;
+    Login: function Login(_ref, params) {var state = _ref.state,commit = _ref.commit,dispatch = _ref.dispatch;
       return new Promise(function (resolve, reject) {
-        login(params).then(function (res) {
+        (0, _userApi.login)(params).then(function (res) {
           commit('SET_TOKEN', res.data.token);
           resolve(res);
         });
       });
     },
-    Logout: function Logout(_ref3, params) {var state = _ref3.state,commit = _ref3.commit,dispatch = _ref3.dispatch;
+    Logout: function Logout(_ref2, params) {var state = _ref2.state,commit = _ref2.commit,dispatch = _ref2.dispatch;
       return new Promise(function (resolve, reject) {
-        logout(params).then(function (res) {
+        (0, _userApi.logout)(params).then(function (res) {
           commit('SET_TOKEN', '');
           commit('SET_ROLE', []);
           commit('SET_USER_INFO', {});
@@ -8429,16 +8542,16 @@ var user = {
         });
       });
     },
-    GetUserInfo: function GetUserInfo(_ref4, params) {var state = _ref4.state,commit = _ref4.commit,dispatch = _ref4.dispatch;
+    GetUserInfo: function GetUserInfo(_ref3, params) {var state = _ref3.state,commit = _ref3.commit,dispatch = _ref3.dispatch;
       return new Promise(function (resolve, reject) {
-        getUserInfo(params).then(function (res) {
+        (0, _userApi.getUserInfo)(params).then(function (res) {
           commit('SET_ROLE', res.data.role);
           commit('SET_USER_INFO', res.data);
           resolve(res);
         });
       });
     },
-    GetMenu: function GetMenu(_ref5, params) {var state = _ref5.state,commit = _ref5.commit,dispatch = _ref5.dispatch;
+    GetMenu: function GetMenu(_ref4, params) {var state = _ref4.state,commit = _ref4.commit,dispatch = _ref4.dispatch;
       return new Promise(function (resolve, reject) {
         var role = state.role.length > 0 ? state.role[0] : '';
         getMenu(role).then(function (res) {
@@ -8448,7 +8561,7 @@ var user = {
       });
     },
     // 将菜单列表扁平化形成权限列表
-    GetPermissionList: function GetPermissionList(_ref6) {var state = _ref6.state,dispatch = _ref6.dispatch;
+    GetPermissionList: function GetPermissionList(_ref5) {var state = _ref5.state,dispatch = _ref5.dispatch;
       return new Promise(function (resolve) {
         var permissionList = [];
         // 将菜单数据扁平化为一级
@@ -8472,6 +8585,33 @@ var user = {
 
 
 user;exports.default = _default;
+
+/***/ }),
+
+/***/ "E:\\uni-app\\first-project\\uni-app\\util\\service.js":
+/*!********************************************************!*\
+  !*** E:/uni-app/first-project/uni-app/util/service.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.setStore = exports.getStore = void 0;var getStore = function getStore(key) {
+  var value = uni.getStorageSync(key);
+  console.log(key, " at util\\service.js:3");
+  console.log(JSON.stringify(uni.getStorageSync(key)), " at util\\service.js:4");
+  if (value == '') {
+    return value;
+  } else if (typeof value == "object") {
+    return value;
+  } else {
+    return JSON.parse(value);
+  }
+};exports.getStore = getStore;
+var setStore = function setStore(key, value) {
+  uni.setStorageSync(key, JSON.stringify(value));
+};exports.setStore = setStore;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-app-plus/dist/index.js */ "./node_modules/@dcloudio/uni-app-plus/dist/index.js")["default"]))
 
 /***/ })
 

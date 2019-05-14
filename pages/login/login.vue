@@ -8,14 +8,14 @@
 		<view class="uni-common-mt">
 			<view class="uni-form-item uni-column">
 				<view class="title">用户名</view>
-				<input class="uni-input" focus placeholder="请输入用户名" />
+				<input class="uni-input" focus placeholder="请输入用户名" v-model="username"/>
 			</view>
 			<view class="uni-form-item uni-column">
 				<view class="title">密码</view>
-				<input class="uni-input" password type="text" placeholder="请输入密码" />
+				<input class="uni-input" password type="text" placeholder="请输入密码"  v-model="password"/>
 			</view>
 			<view class="button-sp-area log-btn">
-				<button type="primary" plain="true" @click="bindLogin" size="mini">按钮</button>
+				<button type="primary" plain="true" @click="bindLogin" size="mini">登录</button>
 			</view>
 			<view class="oauth-row" v-if="hasProvider" :style="{top:positionTop+'px'}">
 				<view class="oauth-image" v-for="provider in providerList" :key="provider.value">
@@ -33,7 +33,7 @@
 		mixins:[mixinsFun],
 		data(){
 			return {
-				account:'',
+				username:'',
 				password:'',
 				title: 'input',
 				focus: false,
@@ -45,7 +45,7 @@
 			}
 		},
 		computed:{
-			...mapGetters(['userName','token'])
+			...mapGetters(['uniToken'])
 		},
 		methods:{
 			initProvider() {
@@ -53,7 +53,6 @@
                 uni.getProvider({
                     service: 'oauth',
                     success: (res) => {
-						console.log(JSON.stringify(res));
                         if (res.provider && res.provider.length) {
                             for (let i = 0; i < res.provider.length; i++) {
                                 if (~filters.indexOf(res.provider[i])) {
@@ -61,7 +60,6 @@
                                         value: res.provider[i],
                                         image: '../../static/img/' + res.provider[i] + '.png'
                                     });
-									console.log(JSON.stringify(this.providerList));
                                 }
                             }
                             this.hasProvider = true;
@@ -73,16 +71,32 @@
                 });
             },
 			bindLogin(){
-				// this.uShowActionSheet(['A', 'B', 'C'])
-				// console.log(this.getSystemInfoSyncData())
-				// this.goBackUrl(1);
-				// this.getProviderData()
-				this.getLogin()
+				var params = {
+					username: this.username,
+					password: this.password
+				}
+				this.$store.dispatch('user/Login', params).then(res => {
+					if (res.success) {
+						this.$store.dispatch('user/GetUserInfo', {token:res.data.token}).then(data => {
+							if (data.success) {
+								if (this.uniToken) {
+								    uni.reLaunch({
+								        url: '../index/index',
+								    });
+								} else {
+								    uni.navigateBack();
+								}
+							}
+						})
+					} else {
+						this.showToast('登录失败')
+					}
+				})
 			},
 			initPosition() {
 				this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
 			},
-			 oauth(value) {
+			oauth(value) {
                 uni.login({
                     provider: value,
                     success: (res) => {
@@ -94,7 +108,14 @@
                                  * 实际开发中，获取用户信息后，需要将信息上报至服务端。
                                  * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
                                  */
-                                this.toMain(infoRes.userInfo.nickName,infoRes.userInfo.openId);
+								this.$store.commit('user/SET_OPENID',{openId:infoRes.userInfo.openId});
+								if (infoRes.userInfo.openId) {
+								    uni.reLaunch({
+								        url: '../index/index',
+								    });
+								} else {
+								    uni.navigateBack();
+								}
                             }
                         });
                     },
@@ -102,21 +123,6 @@
                         console.error('授权登录失败：' + JSON.stringify(err));
                     }
                 });
-            },
-			toMain(userName,token) {
-                this.$store.commit('user/SET_USERNAME',{userName:userName,token:token})
-                /**
-                 * 强制登录时使用reLaunch方式跳转过来
-                 * 返回首页也使用reLaunch方式
-                 */
-                if (this.token) {
-                    uni.reLaunch({
-                        url: '../index/index',
-                    });
-                } else {
-                    uni.navigateBack();
-                }
-
             },
 			onKeyInput: function(event) {
 				this.inputValue = event.target.value

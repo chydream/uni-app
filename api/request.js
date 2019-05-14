@@ -1,8 +1,9 @@
-import baseUrl from '../config/config'
-export default function request(successCallBack,errorCallBack,url,method,param){
+import {baseUrl} from '../config/config'
+export default function request(successCallBack,errorCallBack,url,method,param,header){
 	uni.showLoading({
 		title:'加载中'
 	});
+	header=header==null?{}:header;
 	uni.request({
 		url: baseUrl+url, //仅为示例，并非真实接口地址。
 		data:param,
