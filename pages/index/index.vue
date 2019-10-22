@@ -20,14 +20,14 @@
 		  ...mapGetters(['uniToken'])
 		},
 		onLoad() {
-			if(this.uniToken==''){
-				this.goUrl('/pages/login/login');
-			}
+			// if(this.uniToken==''){
+			// 	this.goUrl('/pages/login/login');
+			// }
 		},
 		onShow (){
-			if(this.uniToken==''){
-				this.goUrl('/pages/login/login');
-			}
+			// if(this.uniToken==''){
+			// 	this.goUrl('/pages/login/login');
+			// }
 		},
 		methods: {
 
