@@ -88,15 +88,14 @@
       }
     },
     "uni-app": {
-      "compilerVersion": "1.9.4",
-      "control": "v8"
+      "compilerVersion": "2.0.1",
+      "control": "v8",
+      "nvueCompiler": "weex"
     },
     "secondwebview": {
       "id": "1",
       "launch_path": "__uniappview.html",
-      "mode": "child",
-      "top": 0,
-      "bottom": 56
+      "kernel": "WKWebview"
     }
   }
 }
