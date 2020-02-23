@@ -1,9 +1,13 @@
+import {getStore,setStore} from '@/util/service'
 const mixinsFun = {
   data () {
     return {
     }
   },
-  created () {
+  onLoad () {
+	  if(getStore('studentId')==''){
+		// this.goUrl('/pages/home/index')
+	  }
   },
   methods: {
     uShowToast (title,icon) {
@@ -23,15 +27,16 @@ const mixinsFun = {
     uHideLoading(){
     	uni.hideLoading();
     },
-    uShowModel(title,content){
+    uShowModel(title,content,callback){
     	uni.showModal({
     		title: title,
     		content: content,
     		success: function (res) {
     			if (res.confirm) {
-    				console.log('用户点击确定');
+					callback()
+    				// console.log('用户点击确定');
     			} else if (res.cancel) {
-    				console.log('用户点击取消');
+    				// console.log('用户点击取消');
     			}
     		}
     	});
@@ -96,7 +101,28 @@ const mixinsFun = {
     			console.log(error);
     		}
     	})
-    }
+    },
+	formatTime (time) {
+		var date = new Date(time)
+		var y = date.getFullYear(date)
+		var m = date.getMonth() + 1
+		var d = date.getDay()
+		var h = date.getHours()
+		var mi = date.getMinutes()
+		if(m<10){
+			m = '0'+ m
+		}
+		if(d<10){
+			d = '0'+ d
+		}
+		if(h<10){
+			h = '0'+ h
+		}
+		if(mi<10){
+			mi = '0'+ mi
+		}
+		return y + "-" + m + "-" + d + " " + h + ":" + mi
+	}
   }
 }
 const mixinsMobile = {

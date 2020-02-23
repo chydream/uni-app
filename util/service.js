@@ -1,7 +1,7 @@
 export const getStore = function (key) {
 	let value = uni.getStorageSync(key);
-	console.log(key);
-	console.log(JSON.stringify(uni.getStorageSync(key)));
+	// console.log(key);
+	// console.log(JSON.stringify(uni.getStorageSync(key)));
 	if(value==''){
 		return value;
 	}else if(typeof value == "object"){

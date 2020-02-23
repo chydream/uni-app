@@ -3,38 +3,67 @@
 		{
 			"path": "pages/home/index",
 			"style": {
-				"navigationBarTitleText": "首页",
+				"navigationBarTitleText": "云上课堂",
 				"app-plus":{
 					"titleNView": false //禁用原生导航栏
+				},
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/ebook/index",
+			"style": {
+				"navigationBarTitleText": "电子课本",
+				"app-plus":{
+					"titleNView": true //禁用原生导航栏
 				}
 			}
 		},
 		{
-			"path": "pages/index/index",
+			"path": "pages/live/index",
 			"style": {
-				"navigationBarTitleText": "首页"
-			}
-		},
-		{
-			"path": "pages/user/user",
-			"style": {
-				"navigationBarTitleText": "我的"
-			}
-		},
-		{
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "登录",
+				"navigationBarTitleText": "直播中心",
 				"app-plus":{
-					"titleNView": false //禁用原生导航栏
+					"titleNView": true //禁用原生导航栏
+				},
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/live/detail",
+			"style": {
+				"navigationBarTitleText": "云上课堂点播",
+				"app-plus":{
+					"titleNView": true //禁用原生导航栏
 				}
 			}
 		},
 		{
-			"path": "pages/list/listNew",
+			"path": "pages/record/index",
 			"style": {
-				"navigationBarTitleText": "列表",
-				"enablePullDownRefresh":true
+				"navigationBarTitleText": "课堂点播",
+				"app-plus":{
+					"titleNView": true //禁用原生导航栏
+				},
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/course/index",
+			"style": {
+				"navigationBarTitleText": "我的课程",
+				"app-plus":{
+					"titleNView": true //禁用原生导航栏
+				}
+			}
+		},
+		{
+			"path": "pages/home/detail",
+			"style": {
+				"navigationBarTitleText": "课程详情",
+				"app-plus":{
+					"titleNView": true //禁用原生导航栏
+				}
 			}
 		}
 	],
@@ -51,31 +80,6 @@
 				"name": "", //模式名称
 				"path": "", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
-			}
-		]
-	},
-	"tabBar":{
-		"color":"#7a7e83",
-		"selectedColor":"#0faeff",
-		"backgroundColor":"#ffffff",
-		"list":[
-			{
-				"pagePath":"pages/index/index",
-				"text":"首页",
-				"iconPath":"static/img/home.png",
-				"selectedIconPath":"static/img/homeHL.png"
-			},
-			{
-				"pagePath":"pages/list/listNew",
-				"text":"列表",
-				"iconPath":"static/img/home.png",
-				"selectedIconPath":"static/img/homeHL.png"
-			},
-			{
-				"pagePath": "pages/user/user",
-				"text": "我的",
-				"iconPath": "static/img/user.png",
-				"selectedIconPath": "static/img/userHL.png"
 			}
 		]
 	}

@@ -1,3 +1,4 @@
+import CryptoJS from '@/util/crypto-js/index.js'
 function friendlyDate(timestamp) {
 	var formats = {
 		'year': '%n% 年前',
@@ -47,6 +48,34 @@ function friendlyDate(timestamp) {
 	}
 	return formats[diffType].replace('%n%', diffValue);
 }
+//查询字符串参数
+function getQueryString(url){
+    var index1=url.indexOf("?");
+    if(index1>0){
+        var qs=url.substring(index1+1);
+        var args={};
+        var items=qs.split("&");
+        var len=items.length;
+        var i= 0,item=null,name=null,value=null;
+        for(i=0;i<len;i++){
+            item=items[i].split("=");
+            name=decodeURIComponent(item[0]);
+            value=decodeURIComponent(item[1]);
+            if(name.length){
+                args[name]=value;
+            }
+        }
+        return args;
+    }
+}
+function decrypt(word,key){
+	 var key = CryptoJS.enc.Utf8.parse(key);	
+	 var decrypt = CryptoJS.AES.decrypt(word, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+	 return CryptoJS.enc.Utf8.stringify(decrypt).toString();
+}
+
 export {
-	friendlyDate
+	friendlyDate,
+	getQueryString,
+	decrypt
 }

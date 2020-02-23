@@ -1,7 +1,11 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/login/login"
+    "pages/home/index",
+    "pages/ebook/index",
+    "pages/live/index",
+    "pages/record/index",
+    "pages/course/index",
+    "pages/home/detail"
   ],
   "subPackages": [],
   "window": {

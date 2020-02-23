@@ -1,4 +1,5 @@
 import request from './request'
+import {cloudUrl} from '../config/config'
 /**
  * 登录接口
  * @param {password,username} params 
@@ -44,5 +45,16 @@ export const getUserInfo = (params) => {
             }
         }
         request(successCallBack,null,'https://www.easy-mock.com/mock/5cd7d319d0d16128bd72b17a/demo/userInfo','POST',params)
+    })
+}
+// 根据token获取用户信息
+export const analysisUserInfo = (params) => {
+    return new Promise((resolve, reject) => {
+        let successCallBack = function(res){
+            if(res.data){
+               resolve(res.data)
+            }
+        }
+        request(successCallBack,null,cloudUrl + '/user/analysisUserInfo','POST',params)
     })
 }

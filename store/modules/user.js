@@ -1,5 +1,5 @@
-import {login,getUserInfo,logout} from '@/api/userApi'
-import {getStore,setStore} from '../../util/service'
+import {login,getUserInfo,logout,analysisUserInfo} from '@/api/userApi'
+import {getStore,setStore} from '@/util/service'
 const user = {
     namespaced: true,
     state: {
@@ -8,7 +8,8 @@ const user = {
         uniToken: getStore('uniToken') || '',
         menu: getStore('menu') || [],
         permission: {},
-		openId:''
+		openId:'',
+		studentInfo: {}
     },
     getters: {},
     mutations: {
@@ -28,6 +29,10 @@ const user = {
             state.userInfo = params
             setStore('userInfo', params)
         },
+		SET_STUDENT_INFO: (state, params) => {
+		    state.studentInfo = params
+			// console.log(state.studentInfo)
+		},
 		SET_OPENID:(state,params)=>{
             state.uniToken = params.openId
             setStore('uniToken', params.openId)
@@ -62,6 +67,19 @@ const user = {
                 })
             })
         },
+		AnalysisUserInfo ({state, commit, dispatch}, params) {
+		    return new Promise((resolve, reject) => {
+		        analysisUserInfo(params).then(res => {
+					// console.log(res)
+		            commit('SET_STUDENT_INFO', res.data)
+					setStore('schoolId',res.data.schoolId)
+					setStore('schoolName',res.data.schoolName)
+					setStore('studentId',res.data.userId)
+					setStore('userName',res.data.userName)
+		            resolve(res)
+		        })
+		    })
+		},
         GetMenu ({state, commit, dispatch}, params) {
             return new Promise((resolve, reject) => {
                 var role = state.role.length > 0 ? state.role[0] : ''

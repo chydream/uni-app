@@ -1,8 +1,10 @@
 {
   "pages": [
+    "pages/home/index",
     "pages/index/index",
     "pages/user/user",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/list/listNew"
   ],
   "subPackages": [],
   "window": {
@@ -23,6 +25,12 @@
         "selectedIconPath": "static/img/homeHL.png"
       },
       {
+        "pagePath": "pages/list/listNew",
+        "text": "列表",
+        "iconPath": "static/img/home.png",
+        "selectedIconPath": "static/img/homeHL.png"
+      },
+      {
         "pagePath": "pages/user/user",
         "text": "我的",
         "iconPath": "static/img/user.png",
@@ -30,11 +38,12 @@
       }
     ]
   },
+  "nvueCompiler": "weex",
   "splashscreen": {
     "alwaysShowBeforeRender": true,
     "autoclose": false
   },
   "appname": "first-project",
-  "compilerVersion": "1.9.4",
+  "compilerVersion": "2.0.1",
   "usingComponents": {}
 }

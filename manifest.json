@@ -54,11 +54,33 @@
     "quickapp" : {},
     /* 快应用特有相关 */
     "mp-weixin" : {
-        /* 小程序特有相关 */
-        "appid" : "",
+        "appid" : "wx370fc45ea1256140",
         "setting" : {
             "urlCheck" : false
         },
         "usingComponents" : true
+    },
+    "h5" : {
+        "title" : "first-project",
+        "domain" : "",
+        "router" : {
+            "base" : "/h5/"
+        },
+        "devServer" : {
+            "port" : 8080,
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/cloud" : {
+                    // "target": "http://192.168.66.49:9995/cloud",
+                    "target" : "http://japi.xueerqin.net/cloud",
+                    // "target": "http://192.168.66.49:9995/cloud",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/cloud" : "/"
+                    }
+                }
+            }
+        }
     }
 }
