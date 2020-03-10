@@ -33,6 +33,7 @@
 				<span class="search-btn" @click="searchCourse">搜索</span>
 			</div>
 		</div>
+		<!-- <button open-type="getUserInfo" lang="zh_CN" @click="getUserInfo">获取用户信息ddd</button> -->
 		<div class="item-wrap">
 			<ul class="list-item">
 				<li v-for="(item,index) in liveList" :key="index" @click="goDetail(item.ccId)" v-if="liveList.length > 0">
@@ -95,7 +96,7 @@
 			}
 		},
 		computed: {
-		  ...mapGetters(['uniToken', 'roleCode', 'token', 'studentInfo'])
+		  ...mapGetters(['uniToken', 'roleCode', 'token', 'studentInfo', 'unionId'])
 		},
 		onLoad(option) {
 			this.initData()
@@ -115,19 +116,71 @@
 		onShow (){
 		},
 		methods: {
+			getUserInfo (e) {
+				console.log(e)
+			},
 			initData () {
-				var params = {
-					token: this.token,
-					roleCode: this.roleCode
-				}
-				this.$store.dispatch('user/AnalysisUserInfo',params).then((res) => {
+				var self = this
+				// 接口2
+				uni.login({
+				  provider: 'weixin',
+				  success: function (res) {
 					// console.log(res)
-					if(res.status === 200){
-						this.schoolId = res.data.schoolId
-						this.studentId = res.data.userId
-						this.userName = res.data.userName
-						this.selectCsListToStu('','','')
+					var js_code = res.code	
+					var params = {
+						code: js_code
 					}
+					// self.uShowModel('111','111',null)
+					wx.getUserInfo({
+						success: function(data) {
+						  // self.uShowModel('222','222',null)
+						  // console.log(data)
+						  var encryptedData = data.encryptedData
+						  var iv = data.iv
+						  var paramsNew = {
+							  code: js_code,
+							  encryptedData:encryptedData,
+							  iv:iv
+						  }
+						  // console.log(paramsNew)
+						  self.$store.dispatch('home/GetLoginInfoByCodeAndUserInfo',paramsNew).then(resultData => {
+							  // console.log(resultData)
+							  if(resultData.status === 200&&resultData.data.decryptedData){
+								  setStore('openId',resultData.data.openId)
+								  // self.$store.commit('user/SET_UNIONID',resultData.data.decryptedData.unionId)
+								  self.$store.commit('user/SET_UNIONID', 'wxtest000003')
+								  var params = {
+								  	wxMiniProgramToken: self.unionId,
+								  	roleCode: self.roleCode
+								  }
+								  self.$store.dispatch('user/AnalysisUserInfo',params).then((res) => {
+								  	// console.log(res)
+								  	if(res.status === 200){
+								  		self.schoolId = res.data.schoolId
+								  		self.studentId = res.data.userId
+								  		self.userName = res.data.userName
+								  		self.selectCsListToStu('','','')
+								  	}
+								  })
+							  }
+						  })
+						},
+						fail: function(data){
+							wx.showModal({
+								title: '警告',
+								content: '尚未进行授权，请点击确定跳转到授权页面进行授权。',
+								success: function (res) {
+									if (res.confirm) {
+										console.log('用户点击确定')
+										wx.navigateTo({
+											url: 'auth',
+										})
+									}
+								}
+							})
+						}
+					})
+				  }
 				})
 			},
 			selectCsListToStu (ccName, ccPlatformCourse, status) {
