@@ -115,6 +115,23 @@
 		},
 		onShow (){
 		},
+onPageScroll (scrollTop) {
+			var self = this
+			clearTimeout(this.timer);
+			self.timer = setTimeout(function(){
+				self.t2 = scrollTop.scrollTop
+				if(self.t2 == self.t1){
+					self.isScroll = false
+				}
+			}, 2000);
+			self.t1 = scrollTop.scrollTop
+			self.isScroll = true
+		},
+		onUnload(){
+			this.goUrl('index')
+		},
+		onShareAppMessage: function() {
+		},
 		methods: {
 			getUserInfo (e) {
 				console.log(e)
